@@ -1,0 +1,146 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1ApiExercicios.MainPage">
+    <ScrollView>
+        <VerticalStackLayout Spacing="10" Margin="10">
+
+            <!-- Campo de busca -->
+            <Entry x:Name="entry_busca" 
+                   Placeholder="Buscar Exercícios" 
+                   TextChanged="OnSearchTextChanged"/>
+
+            <!-- Lista de sugestões (inicialmente oculta) -->
+            <ListView x:Name="listview_sugestoes"
+                      IsVisible="False"
+                      HeightRequest="300"
+                      BackgroundColor="LightGray"
+                      ItemTapped="OnSuggestionTapped">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Padding="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Frame para a imagem do exercício -->
+                                <Frame Grid.Column="0" 
+                                       WidthRequest="70" 
+                                       HeightRequest="70"
+                                       CornerRadius="10"
+                                       Padding="2"
+                                       BackgroundColor="White">
+
+                                    <!-- Stack para imagem + fallback -->
+                                    <Grid>
+                                        <!-- Imagem real do exercício -->
+                                        <Image Source="{Binding GifUrl}"
+                                               Aspect="AspectFill"
+                                               BackgroundColor="LightGray"/>
+
+                                        <!-- Emoji de fallback caso imagem não carregue -->
+                                        <Label Text="🏋️"
+                                               FontSize="30"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center"
+                                               IsVisible="False"
+                                               x:Name="FallbackEmoji"/>
+                                    </Grid>
+                                </Frame>
+
+                                <!-- Nome e informações do exercício -->
+                                <StackLayout Grid.Column="1" 
+                                           VerticalOptions="Center"
+                                           Margin="10,0,0,0">
+                                    <Label Text="{Binding Name}" 
+                                           FontSize="16" 
+                                           FontAttributes="Bold"
+                                           LineBreakMode="WordWrap"/>
+                                    <Label Text="{Binding Target}" 
+                                           FontSize="12" 
+                                           TextColor="Gray"
+                                           TextTransform="Uppercase"/>
+                                    <Label Text="{Binding BodyPart}" 
+                                           FontSize="11" 
+                                           TextColor="DarkGray"
+                                           TextTransform="Uppercase"/>
+                                </StackLayout>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <!-- Separador visual -->
+            <BoxView Height="1" BackgroundColor="LightGray" Margin="0,10"/>
+
+            <!-- Lista de exercícios selecionados -->
+            <Label Text="Exercícios Selecionados:" 
+                   FontSize="18" 
+                   FontAttributes="Bold"/>
+
+            <ListView x:Name="listview_selecionados"
+                      HeightRequest="300"
+                      BackgroundColor="LightBlue">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Padding="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="60"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="50"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Imagem pequena do exercício selecionado -->
+                                <Frame Grid.Column="0"
+                                       WidthRequest="50"
+                                       HeightRequest="50"
+                                       CornerRadius="25"
+                                       Padding="1"
+                                       BackgroundColor="White">
+                                    <Image Source="{Binding GifUrl}"
+                                           Aspect="AspectFill"/>
+                                </Frame>
+
+                                <StackLayout Grid.Column="1" 
+                                           VerticalOptions="Center"
+                                           Margin="10,0,0,0">
+                                    <Label Text="{Binding Name}" 
+                                           FontSize="16" 
+                                           FontAttributes="Bold"
+                                           LineBreakMode="WordWrap"/>
+                                    <Label Text="{Binding Target}" 
+                                           FontSize="12" 
+                                           TextColor="Gray"
+                                           TextTransform="Uppercase"/>
+                                </StackLayout>
+
+                                <!-- Botão para remover da lista -->
+                                <Button Grid.Column="2"
+                                        Text="❌"
+                                        FontSize="12"
+                                        BackgroundColor="Red"
+                                        TextColor="White"
+                                        WidthRequest="40"
+                                        HeightRequest="40"
+                                        CornerRadius="20"
+                                        Clicked="OnRemoveExercise"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <!-- Botão salvar -->
+            <Button x:Name="btn_salvar"  
+                    Text="Salvar Lista" 
+                    BackgroundColor="Green"
+                    TextColor="White"
+                    Padding="10"
+                    Clicked="OnSaveListClicked"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
